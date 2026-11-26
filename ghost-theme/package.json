@@ -1,0 +1,18 @@
+{
+  "name": "oyemotoye",
+  "description": "Minimalist editorial Ghost theme for øye mot øye",
+  "version": "1.0.0",
+  "engines": {
+    "ghost": ">=5.0.0"
+  },
+  "config": {
+    "layouts": {
+      "main": {
+        "default": "default"
+      }
+    },
+    "context_card": {
+      "active": false
+    }
+  }
+}

@@ -1,0 +1,14 @@
+services:
+  ghost:
+    image: ghost:latest
+    ports:
+      - "2368:2368"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./config.production.json:/var/lib/ghost/config.production.json
+      - ghost-content:/var/lib/ghost/content
+    restart: unless-stopped
+
+volumes:
+  ghost-content:
