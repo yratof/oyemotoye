@@ -1,0 +1,27 @@
+{{ define "main" }}
+<article class="post-full">
+  <header class="post-full-header">
+    <h1 class="post-full-title">{{ .Title }}</h1>
+    <p class="post-full-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+    </p>
+  </header>
+  {{- $feature := .Resources.GetMatch "feature.*" }}
+  {{- with $feature }}
+  <figure class="post-full-image">
+    <img src="{{ .Permalink }}" alt="" class="post-full-image-img">
+  </figure>
+  {{- end }}
+  <div class="post-full-content">
+    {{ .Content }}
+  </div>
+  {{- with .GetTerms "tags" }}
+  <ul class="tags">
+    {{- range . }}
+    <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
+    {{- end }}
+  </ul>
+  {{- end }}
+  <p class="back-link"><a href="{{ "/" | relURL }}">&larr; Back to all posts</a></p>
+</article>
+{{ end }}

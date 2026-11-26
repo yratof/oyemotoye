@@ -1,0 +1,23 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Section" "posts" }}
+<section aria-labelledby="blog-heading">
+  <h2 id="blog-heading" class="visually-hidden">Blog</h2>
+  {{ range $posts }}
+  <article class="post-card">
+    {{- $feature := .Resources.GetMatch "feature.*" }}
+    {{- if $feature }}
+    <a href="{{ .RelPermalink }}" class="post-card-image-link">
+      <img src="{{ $feature.RelPermalink | relURL }}" alt="" class="post-card-image" loading="lazy">
+    </a>
+    {{- end }}
+    <div class="post-card-content">
+      <h3 class="post-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p class="post-card-excerpt">{{ .Summary | plainify | truncate 160 }}</p>
+      <p class="post-card-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+      </p>
+    </div>
+  </article>
+  {{ end }}
+</section>
+{{ end }}

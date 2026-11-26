@@ -1,0 +1,16 @@
+baseURL = "/"
+languageCode = "no"
+title = "øye mot øye"
+timeZone = "Europe/Oslo"
+enableRobotsTXT = true
+
+[params]
+  description = "øye mot øye"
+
+[taxonomies]
+  tag = "tags"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
