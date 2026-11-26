@@ -12,4 +12,6 @@ The event was a great way to celebrate creativity and fandom. There were worksho
 
 {{< figure src="animanga_02.jpg" caption="The event space at Animanga 2026" >}}
 
+{{< figure src="animanga_03.jpg" caption="More moments from the event" >}}
+
 A wonderful day filled with creativity and community.

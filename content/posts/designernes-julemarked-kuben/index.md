@@ -12,4 +12,6 @@ The market featured a wide variety of handmade goods, from jewelry and ceramics 
 
 {{< figure src="designer_02.jpg" caption="A vendor stall at the market" >}}
 
+{{< figure src="designer_03.jpg" caption="More handmade goods" >}}
+
 A perfect way to shop local and support the creative community.
