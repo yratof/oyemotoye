@@ -20,9 +20,9 @@ The market featured a wide variety of handmade goods, from jewelry and ceramics 
 
 {{< figure src="designer_06.jpg" caption="Jewellery and leatherwork" >}}
 
-{{< figure src="designer_07.jpg" caption="Wooden toy cars" >}}
-
 {{< figure src="designer_09.jpg" caption="Colourful felt figures and their maker" >}}
+
+{{< figure src="designer_07.jpg" caption="Wooden toy cars" >}}
 
 {{< figure src="designer_08.jpg" caption="Wooden toys on the green table" >}}
 

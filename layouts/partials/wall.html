@@ -1,57 +1,61 @@
-{{- /* Image wall: figures are grouped into repeating compositions
-       offset-left (landscape + portrait set lower), solo-right (one landscape), trio (three portraits) */ -}}
-{{- $figures := partial "figures.html" .page -}}
-{{- $label := .label -}}
-{{- if $figures }}
-{{- /* The first image runs the full width of the browser */ -}}
-{{- with index $figures 0 }}
-{{- $small := .img.Resize "1024x webp q80" }}
-{{- $large := .img.Resize "2048x webp q80" }}
-<figure class="lead">
-  <img class="lead__image" src="{{ $large.RelPermalink }}"
-       srcset="{{ $small.RelPermalink }} 1024w, {{ $large.RelPermalink }} 2048w"
-       sizes="100vw" width="{{ $large.Width }}" height="{{ $large.Height }}"
-       alt="{{ .alt }}" decoding="async">
-  {{- with .caption }}
-  <figcaption class="wall__caption lead__caption">{{ . }}</figcaption>
-  {{- end }}
-</figure>
-{{- end }}
-{{- $figures = after 1 $figures -}}
-{{- end }}
-{{- if $figures }}
-{{- $kinds := slice (dict "name" "offset-left" "size" 2) (dict "name" "solo-right" "size" 1) (dict "name" "trio" "size" 3) -}}
-{{- $groups := slice -}}
+{{- /* Images after the lead, in repeating compositions:
+       sticky: a large image pinned on the left while two tall ones scroll past on the right
+       pair:   two tall images, the second set lower, captions listed in the left column
+       wide:   one wide image, its caption at the foot of the left column
+   A group that gets fewer images than it needs falls back to a smaller one. */ -}}
+{{- $figures := .figures -}}
+{{- $kinds := slice (dict "name" "sticky" "size" 3) (dict "name" "pair" "size" 2) (dict "name" "wide" "size" 1) -}}
 {{- $i := 0 -}}
 {{- range $n, $_ := $figures -}}
   {{- if ge $i (len $figures) }}{{ break }}{{ end -}}
   {{- $kind := index $kinds (mod $n (len $kinds)) -}}
-  {{- $groups = $groups | append (dict "name" $kind.name "items" (first $kind.size (after $i $figures))) -}}
-  {{- $i = add $i $kind.size -}}
-{{- end }}
-<div class="wall" role="region" aria-label="Bilder: {{ $label }}" tabindex="0">
-  {{- range $groups }}
-  {{- $group := . }}
-  <div class="wall__figure wall__figure--{{ .name }}">
-    {{- range $k, $f := .items }}
-    {{- $format := "landscape" }}
-    {{- if or (eq $group.name "trio") (and (eq $group.name "offset-left") (eq $k 1)) }}{{ $format = "portrait" }}{{ end }}
-    {{- $small := $f.img.Resize "800x webp q80" }}
-    {{- $large := $f.img.Resize "1600x webp q80" }}
-    <figure class="wall__item wall__item--{{ $format }}">
-      <div class="wall__media">
-        <img src="{{ $large.RelPermalink }}"
-             srcset="{{ $small.RelPermalink }} 800w, {{ $large.RelPermalink }} 1600w"
-             sizes="(max-width: 520.98px) 80vw, 60vw"
-             width="{{ $large.Width }}" height="{{ $large.Height }}"
-             alt="{{ $f.alt }}" loading="lazy" decoding="async">
+  {{- $items := first $kind.size (after $i $figures) -}}
+  {{- $name := $kind.name -}}
+  {{- if and (eq $name "sticky") (lt (len $items) 3) }}{{ $name = cond (eq (len $items) 2) "pair" "wide" }}{{ end -}}
+  {{- if and (eq $name "pair") (lt (len $items) 2) }}{{ $name = "wide" }}{{ end -}}
+  {{- $start := add $i 2 -}}{{/* numbering: the lead image is 01 */}}
+
+  {{- if eq $name "sticky" }}
+  <div class="g g--sticky">
+    {{- $main := index $items 0 }}
+    <figure class="g__main">
+      <div class="g__pin">
+        {{ partial "img.html" (dict "f" $main "sizes" "(min-width: 900px) 58vw, 100vw") }}
+        <figcaption class="cap">{{ partial "caption.html" (dict "n" $start "f" $main) }}</figcaption>
       </div>
-      {{- with $f.caption }}
-      <figcaption class="wall__caption">{{ . }}</figcaption>
+    </figure>
+    <div class="g__stack">
+      {{- range $k, $f := after 1 $items }}
+      <figure class="g__item">
+        {{ partial "img.html" (dict "f" $f "sizes" "(min-width: 900px) 33vw, 100vw") }}
+        <figcaption class="cap">{{ partial "caption.html" (dict "n" (add $start (add $k 1)) "f" $f) }}</figcaption>
+      </figure>
       {{- end }}
+    </div>
+  </div>
+
+  {{- else if eq $name "pair" }}
+  <div class="g g--pair">
+    <ol class="g__captions" role="list">
+      {{- range $k, $f := $items }}
+      <li class="cap">{{ partial "caption.html" (dict "n" (add $start $k) "f" $f) }}</li>
+      {{- end }}
+    </ol>
+    {{- range $k, $f := $items }}
+    <figure class="g__item g__item--{{ add $k 1 }}">
+      {{ partial "img.html" (dict "f" $f "sizes" "(min-width: 900px) 40vw, 50vw") }}
+      <figcaption class="cap g__inline-cap">{{ partial "caption.html" (dict "n" (add $start $k) "f" $f) }}</figcaption>
     </figure>
     {{- end }}
   </div>
+
+  {{- else }}
+  {{- $f := index $items 0 }}
+  <figure class="g g--wide">
+    {{ partial "img.html" (dict "f" $f "sizes" "(min-width: 900px) 75vw, 100vw") }}
+    <figcaption class="cap">{{ partial "caption.html" (dict "n" $start "f" $f) }}</figcaption>
+  </figure>
   {{- end }}
-</div>
-{{- end }}
+
+  {{- $i = add $i (len $items) -}}
+{{- end -}}

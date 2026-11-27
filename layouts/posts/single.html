@@ -1,21 +1,7 @@
 {{ define "main" }}
 {{- $index := 0 }}
 {{- range $i, $p := where site.RegularPages "Section" "posts" }}{{ if eq $p $ }}{{ $index = $i }}{{ end }}{{ end }}
-{{- $color := partial "episode-color.html" (dict "page" . "index" $index) }}
-{{- /* Text only; the figures are shown in the image wall below */ -}}
-{{- $text := replaceRE `(?s)<figure.*?</figure>` "" .Content | safeHTML }}
-<article class="episode episode--single" data-episode="{{ $color }}" aria-labelledby="post-title">
-  <div class="wrapper episode__grid">
-    <h1 class="episode__eyebrow" id="post-title">{{ .Title }}</h1>
-    <div class="episode__intro">
-      <div class="prose">{{ $text }}</div>
-      <div class="episode__meta">
-        {{ partial "tags.html" . }}
-      </div>
-    </div>
-    <div class="episode__wall">
-      {{ partial "wall.html" (dict "page" . "label" .Title) }}
-    </div>
-  </div>
-</article>
+<div class="posts posts--single" id="top">
+  {{ partial "post.html" (dict "page" . "index" $index "full" true) }}
+</div>
 {{ end }}

@@ -1,31 +1,24 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "posts" }}
-<div class="hero" data-episode="hav">
-  <p class="wordmark" data-hero>{{ site.Title }}</p>
+<div class="hero" id="top" data-episode="hav">
+  <div class="hero__meta">
+    <span>{{ site.Params.tagline }}</span>
+    <span>{{ len $posts }} innlegg</span>
+    {{- with $posts }}
+    {{- $years := slice }}{{ range . }}{{ $years = $years | append (.Date.Format "2006") }}{{ end }}
+    {{- $years = sort (uniq $years) }}
+    <span>{{ index $years 0 }}{{ if gt (len $years) 1 }}–{{ index $years (sub (len $years) 1) }}{{ end }}</span>
+    {{- end }}
+  </div>
+  {{- /* When the lino-print logo exists: set params.logo in hugo.toml to its path under static/ */}}
+  <h1 class="hero__title" data-hero>
+    {{- with site.Params.logo }}<img class="hero__logo" src="{{ . | relURL }}" alt="{{ site.Title }}">{{ else }}{{ site.Title }}{{ end -}}
+  </h1>
 </div>
 
-{{- range $i, $p := $posts }}
-{{- $color := partial "episode-color.html" (dict "page" $p "index" $i) }}
-{{- $id := printf "post-%s" (anchorize $p.Title) }}
-<section class="episode" data-episode="{{ $color }}" aria-labelledby="{{ $id }}">
-  <div class="wrapper episode__grid">
-    <h2 class="episode__eyebrow" id="{{ $id }}"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
-    <div class="episode__intro">
-      {{- $lead := index (findRE `(?s)<p>.*?</p>` $p.Content 1) 0 | default $p.Summary }}
-      <p class="episode__text">{{ $lead | plainify | htmlUnescape }}</p>
-      <div class="episode__meta">
-        {{ partial "tags.html" $p }}
-        <a class="more" href="{{ $p.RelPermalink }}">Les mer <span aria-hidden="true">→</span></a>
-      </div>
-    </div>
-    <div class="episode__wall">
-      {{ partial "wall.html" (dict "page" $p "label" $p.Title) }}
-    </div>
-  </div>
-</section>
-{{- end }}
-
-<div class="outro" data-episode="hav">
-  <p class="wordmark" aria-hidden="true">{{ site.Title }}</p>
+<div class="posts">
+  {{- range $i, $p := $posts }}
+  {{ partial "post.html" (dict "page" $p "index" $i "full" false) }}
+  {{- end }}
 </div>
 {{ end }}

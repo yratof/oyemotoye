@@ -24,8 +24,8 @@
   const still = matchMedia("(prefers-reduced-motion: reduce)");
   let timer;
   const shift = () => {
-    const x = Math.floor(Math.random() * size);
-    const y = Math.floor(Math.random() * size);
+    const x = Math.floor(Math.random() * size) - size / 2;   // -128 to 127, within the overhang
+    const y = Math.floor(Math.random() * size) - size / 2;
     layer.style.transform = `translate3d(${x}px, ${y}px, 0)`;
   };
   const run = () => {
@@ -37,42 +37,18 @@
   document.addEventListener("visibilitychange", () => (document.hidden ? clearInterval(timer) : run()));
 })();
 
-// The page takes the colours of the episode at the middle of the screen, episodes fade in
-// as they arrive, and the small corner mark shows once the big wordmark has scrolled away.
+// The small corner mark shows once the posts have slid up over the big front-page title
+// (the title itself never leaves the screen, it holds still underneath).
 (() => {
-  const root = document.documentElement;
-  const sections = [...document.querySelectorAll("[data-episode]")];
-  if (!sections.length || !("IntersectionObserver" in window)) return;
-
-  // Start with the colours of the first section, then let transitions take over
-  root.dataset.episode = sections[0].dataset.episode;
-  requestAnimationFrame(() => requestAnimationFrame(() => root.setAttribute("data-ready", "")));
-
-  const middle = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) root.dataset.episode = entry.target.dataset.episode;
-    }
-  }, { rootMargin: "-50% 0px -50% 0px" });
-
-  const seen = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        entry.target.setAttribute("data-seen", "");
-        seen.unobserve(entry.target);
-      }
-    }
-  }, { threshold: 0.15 });
-
-  for (const section of sections) {
-    middle.observe(section);
-    if (section.classList.contains("episode")) seen.observe(section);
-  }
-
-  const mark = document.querySelector(".mark[data-mark]");
-  const hero = document.querySelector("[data-hero]");
-  if (mark && hero) {
-    new IntersectionObserver(([entry]) => {
-      mark.dataset.mark = entry.isIntersecting ? "hidden" : "shown";
-    }).observe(hero);
-  }
+  const mark = document.querySelector(".topbar__mark[data-mark]");
+  if (!mark) return;
+  let queued = false;
+  const update = () => {
+    queued = false;
+    mark.dataset.mark = scrollY > innerHeight * 0.75 ? "shown" : "hidden";
+  };
+  addEventListener("scroll", () => {
+    if (!queued) { queued = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  update();
 })();

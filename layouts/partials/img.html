@@ -1,0 +1,7 @@
+{{- /* Responsive image from a figure dict: .f (img, alt), .sizes, .class, .eager */ -}}
+{{- $small := .f.img.Resize "800x webp q80" }}
+{{- $large := .f.img.Resize "2048x webp q80" }}
+<img class="{{ .class }}" src="{{ $large.RelPermalink }}"
+     srcset="{{ $small.RelPermalink }} 800w, {{ $large.RelPermalink }} 2048w"
+     sizes="{{ .sizes | default "100vw" }}" width="{{ $large.Width }}" height="{{ $large.Height }}"
+     alt="{{ .f.alt }}"{{ if not .eager }} loading="lazy"{{ end }} decoding="async">

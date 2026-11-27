@@ -1,2 +1,4 @@
-{{- /* Small wordmark that docks in the corner once the big one has scrolled away */ -}}
-<a class="mark" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}, til forsiden"{{ if .IsHome }} data-mark="hidden"{{ end }}>{{ site.Title }}</a>
+<header class="topbar">
+  <a class="topbar__mark" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}, til forsiden"{{ if .IsHome }} data-mark="hidden"{{ end }}>{{ site.Title }}</a>
+  <a class="topbar__link" href="#innhold">Innhold <span aria-hidden="true">↘</span></a>
+</header>

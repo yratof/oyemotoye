@@ -1,0 +1,50 @@
+{{- /* One post as a coloured block. .page, .index, .full (post page: whole text) */ -}}
+{{- $p := .page -}}
+{{- $full := .full -}}
+{{- $color := partial "episode-color.html" (dict "page" $p "index" .index) -}}
+{{- $figures := partial "figures.html" $p -}}
+{{- $id := printf "post-%s" (anchorize $p.Title) -}}
+<article class="post" data-episode="{{ $color }}" aria-labelledby="{{ $id }}">
+  <header class="post__head">
+    {{- if $full }}
+    <h1 class="post__title" id="{{ $id }}">{{ $p.Title }}</h1>
+    {{- else }}
+    <h2 class="post__title" id="{{ $id }}"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+    {{- end }}
+    <p class="post__year" aria-hidden="true">{{ $p.Date.Format "2006" }}</p>
+    <dl class="post__meta">
+      <div><dt>Dato</dt><dd><time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "02.01.2006" }}</time></dd></div>
+      <div><dt>Bilder</dt><dd>{{ len $figures }}</dd></div>
+      {{- with $p.GetTerms "tags" }}
+      <div><dt>Stikkord</dt><dd>{{ range $k, $t := . }}{{ if $k }}, {{ end }}<a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle }}</a>{{ end }}</dd></div>
+      {{- end }}
+    </dl>
+  </header>
+
+  {{- with index $figures 0 }}
+  <figure class="post__lead">
+    {{ partial "img.html" (dict "f" . "sizes" "100vw" "class" "post__lead-img" "eager" $full) }}
+  </figure>
+  {{- end }}
+
+  <div class="post__body">
+    {{- with index $figures 0 }}
+    <p class="cap post__lead-cap">{{ partial "caption.html" (dict "n" 1 "f" .) }}</p>
+    {{- end }}
+    <div class="post__text prose">
+      {{- if $full }}
+      {{ replaceRE `(?s)<figure.*?</figure>` "" $p.Content | safeHTML }}
+      {{- else }}
+      {{- $lead := index (findRE `(?s)<p>.*?</p>` $p.Content 1) 0 | default $p.Summary }}
+      <p>{{ $lead | plainify | htmlUnescape }}</p>
+      <p class="more"><a href="{{ $p.RelPermalink }}">Les hele <span aria-hidden="true">→</span></a></p>
+      {{- end }}
+    </div>
+  </div>
+
+  {{- if gt (len $figures) 1 }}
+  <div class="post__wall">
+    {{ partial "wall.html" (dict "figures" (after 1 $figures)) }}
+  </div>
+  {{- end }}
+</article>
