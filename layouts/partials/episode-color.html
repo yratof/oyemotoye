@@ -1,4 +1,4 @@
 {{- /* Front matter "color" wins, otherwise cycle through the palette by position */ -}}
-{{- $palette := slice "oliven" "petrol" "leire" "glo" "salvie" "skifer" "blekk" -}}
+{{- $palette := slice "dyp" "fjord" "skum" "tide" "natt" "lagune" "storm" -}}
 {{- $color := .page.Params.color | default (index $palette (mod .index (len $palette))) -}}
 {{- return $color -}}

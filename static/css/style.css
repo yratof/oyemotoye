@@ -24,12 +24,12 @@
 /* TOKENS ---------------------------------------------------------------------------------------- */
 
 :root {
-  --sand:  #D3CEBA;
-  --brun:  #45260E;
+  --skum:  #DCEBEE;   /* sea foam, light text */
+  --navy:  #0A2433;   /* deep water, dark text */
 
-  --color-bg:    #B6BC94;
-  --color-text:  var(--brun);
-  --color-brand: #F0410C;   /* only the wordmark */
+  --color-bg:    #B9D3DA;
+  --color-text:  var(--navy);
+  --color-brand: #F2552C;   /* only the wordmark: a coral buoy on the blue */
 
   --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
@@ -67,15 +67,15 @@
   }
 }
 
-/* Background / text pairs, contrast at least 4.5 : 1 */
-[data-episode="siv"]    { --color-bg: #B6BC94; --color-text: var(--brun); }
-[data-episode="oliven"] { --color-bg: #5E583C; --color-text: var(--sand); }
-[data-episode="petrol"] { --color-bg: #375D5F; --color-text: var(--sand); }
-[data-episode="leire"]  { --color-bg: #CBA993; --color-text: var(--brun); }
-[data-episode="glo"]    { --color-bg: #61251C; --color-text: var(--sand); }
-[data-episode="salvie"] { --color-bg: #A4BFAC; --color-text: var(--brun); }
-[data-episode="skifer"] { --color-bg: #43576D; --color-text: var(--sand); }
-[data-episode="blekk"]  { --color-bg: #46567C; --color-text: var(--sand); }
+/* Ocean palette: background / text pairs, contrast at least 4.5 : 1 */
+[data-episode="hav"]    { --color-bg: #B9D3DA; --color-text: var(--navy); }  /* hero and outro */
+[data-episode="dyp"]    { --color-bg: #0E2F44; --color-text: var(--skum); }
+[data-episode="fjord"]  { --color-bg: #1D4F68; --color-text: var(--skum); }
+[data-episode="skum"]   { --color-bg: #A3CCD4; --color-text: var(--navy); }
+[data-episode="tide"]   { --color-bg: #2C6B7C; --color-text: var(--skum); }
+[data-episode="natt"]   { --color-bg: #142B4D; --color-text: var(--skum); }
+[data-episode="lagune"] { --color-bg: #6BA6B2; --color-text: var(--navy); }
+[data-episode="storm"]  { --color-bg: #36556B; --color-text: var(--skum); }
 
 
 /* RESET ----------------------------------------------------------------------------------------- */
@@ -334,6 +334,32 @@ a {
 }
 
 
+/* LEAD IMAGE: full browser width, at most 90% of the screen high ------------------------------- */
+
+/* Measured on the episode, not the viewport: 100vw would include a classic scrollbar */
+.episode {
+  container-type: inline-size;
+}
+
+.lead {
+  width: 100cqw;
+  margin-inline: calc(50% - 50cqw);
+  margin-bottom: var(--space-wall);
+}
+
+.lead__image {
+  width: 100%;
+  max-height: 90vh;
+  max-height: 90svh;
+  object-fit: cover;
+}
+
+/* The caption stays on the left edge of the type area */
+.lead__caption {
+  padding-inline: calc((100cqw - var(--page-width)) / 2);
+}
+
+
 /* IMAGE WALL ------------------------------------------------------------------------------------ */
 
 .wall__item--landscape { --format: 527 / 373; }
@@ -454,6 +480,23 @@ a {
 
   /* An image low on the right needs a row more before the next one */
   .wall__figure--offset-left:has(> :nth-child(2)) + .wall__figure { margin-top: var(--step); }
+}
+
+
+/* GRAIN: film grain over the whole page, drawn by main.js ----------------------------------------- */
+
+.grain {
+  position: fixed;
+  inset: -50%;               /* oversized, so shifting it never shows an edge */
+  z-index: 100;
+  background-repeat: repeat;
+  opacity: 0.22;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media print {
+  .grain { display: none; }
 }
 
 

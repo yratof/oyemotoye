@@ -3,6 +3,23 @@
 {{- $figures := partial "figures.html" .page -}}
 {{- $label := .label -}}
 {{- if $figures }}
+{{- /* The first image runs the full width of the browser */ -}}
+{{- with index $figures 0 }}
+{{- $small := .img.Resize "1024x webp q80" }}
+{{- $large := .img.Resize "2048x webp q80" }}
+<figure class="lead">
+  <img class="lead__image" src="{{ $large.RelPermalink }}"
+       srcset="{{ $small.RelPermalink }} 1024w, {{ $large.RelPermalink }} 2048w"
+       sizes="100vw" width="{{ $large.Width }}" height="{{ $large.Height }}"
+       alt="{{ .alt }}" decoding="async">
+  {{- with .caption }}
+  <figcaption class="wall__caption lead__caption">{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end }}
+{{- $figures = after 1 $figures -}}
+{{- end }}
+{{- if $figures }}
 {{- $kinds := slice (dict "name" "offset-left" "size" 2) (dict "name" "solo-right" "size" 1) (dict "name" "trio" "size" 3) -}}
 {{- $groups := slice -}}
 {{- $i := 0 -}}

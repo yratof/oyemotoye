@@ -14,4 +14,16 @@ The market featured a wide variety of handmade goods, from jewelry and ceramics 
 
 {{< figure src="designer_03.jpg" caption="More handmade goods" >}}
 
+{{< figure src="designer_04.jpg" caption="Wooden spoons from @hjertetre" >}}
+
+{{< figure src="designer_05.jpg" caption="A closer look at the goods" >}}
+
+{{< figure src="designer_06.jpg" caption="Jewellery and leatherwork" >}}
+
+{{< figure src="designer_07.jpg" caption="Wooden toy cars" >}}
+
+{{< figure src="designer_09.jpg" caption="Colourful felt figures and their maker" >}}
+
+{{< figure src="designer_08.jpg" caption="Wooden toys on the green table" >}}
+
 A perfect way to shop local and support the creative community.
