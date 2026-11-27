@@ -1,0 +1,13 @@
+{{- /* Collect the figure shortcodes of a post (src + caption) in order, as image resources */ -}}
+{{- $page := . -}}
+{{- $out := slice -}}
+{{- range findRE `\{\{<\s*figure\s[^>]*>\}\}` $page.RawContent -}}
+  {{- $attrs := dict -}}
+  {{- range findRESubmatch `(\w+)="([^"]*)"` . -}}
+    {{- $attrs = merge $attrs (dict (index . 1) (index . 2)) -}}
+  {{- end -}}
+  {{- with $page.Resources.GetMatch (index $attrs "src") -}}
+    {{- $out = $out | append (dict "img" . "caption" (index $attrs "caption" | default "") "alt" (index $attrs "alt" | default (index $attrs "caption" | default ""))) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

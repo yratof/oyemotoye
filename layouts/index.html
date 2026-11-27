@@ -1,23 +1,31 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "posts" }}
-<section aria-labelledby="blog-heading">
-  <h2 id="blog-heading" class="visually-hidden">Blog</h2>
-  {{ range $posts }}
-  <article class="post-card">
-    {{- $feature := .Resources.GetMatch "feature.*" }}
-    {{- if $feature }}
-    <a href="{{ .RelPermalink }}" class="post-card-image-link">
-      <img src="{{ $feature.RelPermalink | relURL }}" alt="" class="post-card-image" loading="lazy">
-    </a>
-    {{- end }}
-    <div class="post-card-content">
-      <h3 class="post-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-      <p class="post-card-excerpt">{{ .Summary | plainify | truncate 160 }}</p>
-      <p class="post-card-meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
-      </p>
+<div class="hero" data-episode="siv">
+  <p class="wordmark" data-hero>{{ site.Title }}</p>
+</div>
+
+{{- range $i, $p := $posts }}
+{{- $color := partial "episode-color.html" (dict "page" $p "index" $i) }}
+{{- $id := printf "post-%s" (anchorize $p.Title) }}
+<section class="episode" data-episode="{{ $color }}" aria-labelledby="{{ $id }}">
+  <div class="wrapper episode__grid">
+    <h2 class="episode__eyebrow" id="{{ $id }}"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+    <div class="episode__intro">
+      {{- $lead := index (findRE `(?s)<p>.*?</p>` $p.Content 1) 0 | default $p.Summary }}
+      <p class="episode__text">{{ $lead | plainify | htmlUnescape }}</p>
+      <div class="episode__meta">
+        {{ partial "tags.html" $p }}
+        <a class="more" href="{{ $p.RelPermalink }}">Les mer <span aria-hidden="true">→</span></a>
+      </div>
     </div>
-  </article>
-  {{ end }}
+    <div class="episode__wall">
+      {{ partial "wall.html" (dict "page" $p "label" $p.Title) }}
+    </div>
+  </div>
 </section>
+{{- end }}
+
+<div class="outro" data-episode="siv">
+  <p class="wordmark" aria-hidden="true">{{ site.Title }}</p>
+</div>
 {{ end }}

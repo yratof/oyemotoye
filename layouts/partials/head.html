@@ -2,4 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
 <meta name="description" content="{{ .Description | default site.Params.description }}">
+<meta name="theme-color" content="#B6BC94">
+<link rel="preload" href="{{ "fonts/dm-mono-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+<script>document.documentElement.setAttribute("data-js", "");</script>

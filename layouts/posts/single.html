@@ -1,27 +1,21 @@
 {{ define "main" }}
-<article class="post-full">
-  <header class="post-full-header">
-    <h1 class="post-full-title">{{ .Title }}</h1>
-    <p class="post-full-meta">
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
-    </p>
-  </header>
-  {{- $feature := .Resources.GetMatch "feature.*" }}
-  {{- with $feature }}
-  <figure class="post-full-image">
-    <img src="{{ .Permalink }}" alt="" class="post-full-image-img">
-  </figure>
-  {{- end }}
-  <div class="post-full-content">
-    {{ .Content }}
+{{- $index := 0 }}
+{{- range $i, $p := where site.RegularPages "Section" "posts" }}{{ if eq $p $ }}{{ $index = $i }}{{ end }}{{ end }}
+{{- $color := partial "episode-color.html" (dict "page" . "index" $index) }}
+{{- /* Text only; the figures are shown in the image wall below */ -}}
+{{- $text := replaceRE `(?s)<figure.*?</figure>` "" .Content | safeHTML }}
+<article class="episode episode--single" data-episode="{{ $color }}" aria-labelledby="post-title">
+  <div class="wrapper episode__grid">
+    <h1 class="episode__eyebrow" id="post-title">{{ .Title }}</h1>
+    <div class="episode__intro">
+      <div class="prose">{{ $text }}</div>
+      <div class="episode__meta">
+        {{ partial "tags.html" . }}
+      </div>
+    </div>
+    <div class="episode__wall">
+      {{ partial "wall.html" (dict "page" . "label" .Title) }}
+    </div>
   </div>
-  {{- with .GetTerms "tags" }}
-  <ul class="tags">
-    {{- range . }}
-    <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-    {{- end }}
-  </ul>
-  {{- end }}
-  <p class="back-link"><a href="{{ "/" | relURL }}">&larr; Back to all posts</a></p>
 </article>
 {{ end }}

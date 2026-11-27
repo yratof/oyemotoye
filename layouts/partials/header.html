@@ -1,3 +1,2 @@
-<header class="site-header">
-  <h1 class="site-title"><a href="{{ "/" | relURL }}">{{ site.Title }}</a></h1>
-</header>
+{{- /* Small wordmark that docks in the corner once the big one has scrolled away */ -}}
+<a class="mark" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}, til forsiden"{{ if .IsHome }} data-mark="hidden"{{ end }}>{{ site.Title }}</a>
