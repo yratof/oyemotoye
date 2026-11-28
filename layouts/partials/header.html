@@ -1,4 +1,9 @@
 <header class="topbar">
-  <a class="topbar__mark" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}, til forsiden"{{ if .IsHome }} data-mark="hidden"{{ end }}>{{ site.Title }}</a>
-  <a class="topbar__link" href="#innhold">Innhold <span aria-hidden="true">↘</span></a>
+  <a class="topbar__mark" href="{{ "/" | relLangURL }}" aria-label="{{ site.Title }}, {{ i18n "toFront" }}"{{ if .IsHome }} data-mark="hidden"{{ end }}>{{ site.Title }}</a>
+  <nav class="lang" aria-label="{{ i18n "language" }}">
+    {{- range .AllTranslations }}
+    <a class="lang__option" href="{{ .RelPermalink }}" hreflang="{{ .Language.LanguageCode }}" lang="{{ .Language.LanguageCode }}"
+       {{- if eq .Language.Lang $.Language.Lang }} aria-current="page"{{ end }}>{{ cond (eq .Language.Lang "nb") "NO" (upper .Language.Lang) }}</a>
+    {{- end }}
+  </nav>
 </header>

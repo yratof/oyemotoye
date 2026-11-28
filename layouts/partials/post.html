@@ -11,14 +11,7 @@
     {{- else }}
     <h2 class="post__title" id="{{ $id }}"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
     {{- end }}
-    <p class="post__year" aria-hidden="true">{{ $p.Date.Format "2006" }}</p>
-    <dl class="post__meta">
-      <div><dt>Dato</dt><dd><time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "02.01.2006" }}</time></dd></div>
-      <div><dt>Bilder</dt><dd>{{ len $figures }}</dd></div>
-      {{- with $p.GetTerms "tags" }}
-      <div><dt>Stikkord</dt><dd>{{ range $k, $t := . }}{{ if $k }}, {{ end }}<a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle }}</a>{{ end }}</dd></div>
-      {{- end }}
-    </dl>
+    <p class="post__date"><time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ time.Format ":date_long" $p.Date }}</time></p>
   </header>
 
   {{- with index $figures 0 }}
@@ -37,7 +30,7 @@
       {{- else }}
       {{- $lead := index (findRE `(?s)<p>.*?</p>` $p.Content 1) 0 | default $p.Summary }}
       <p>{{ $lead | plainify | htmlUnescape }}</p>
-      <p class="more"><a href="{{ $p.RelPermalink }}">Les hele <span aria-hidden="true">→</span></a></p>
+      <p class="more"><a href="{{ $p.RelPermalink }}">{{ i18n "readMore" }} <span aria-hidden="true">→</span></a></p>
       {{- end }}
     </div>
   </div>

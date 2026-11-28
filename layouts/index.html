@@ -1,15 +1,6 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "posts" }}
 <div class="hero" id="top" data-episode="hav">
-  <div class="hero__meta">
-    <span>{{ site.Params.tagline }}</span>
-    <span>{{ len $posts }} innlegg</span>
-    {{- with $posts }}
-    {{- $years := slice }}{{ range . }}{{ $years = $years | append (.Date.Format "2006") }}{{ end }}
-    {{- $years = sort (uniq $years) }}
-    <span>{{ index $years 0 }}{{ if gt (len $years) 1 }}–{{ index $years (sub (len $years) 1) }}{{ end }}</span>
-    {{- end }}
-  </div>
   {{- /* When the lino-print logo exists: set params.logo in hugo.toml to its path under static/ */}}
   <h1 class="hero__title" data-hero>
     {{- with site.Params.logo }}<img class="hero__logo" src="{{ . | relURL }}" alt="{{ site.Title }}">{{ else }}{{ site.Title }}{{ end -}}

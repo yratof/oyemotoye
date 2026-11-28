@@ -1,2 +1,1 @@
-{{- /* Numbered caption: "01  One of the many cosplayers" */ -}}
-<span class="cap__num">{{ printf "%02d" .n }}</span>{{ with .f.caption }} <span class="cap__text">{{ . }}</span>{{ end }}
+{{- with .f.caption }}<span class="cap__text">{{ . }}</span>{{ end -}}

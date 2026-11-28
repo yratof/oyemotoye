@@ -1,5 +1,5 @@
 ---
-title: "Designernes julemarked på KUBEN"
+title: "Designers’ Christmas market at KUBEN"
 date: 2026-11-26
 feature: "feature.jpg"
 ---

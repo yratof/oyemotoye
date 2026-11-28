@@ -3,5 +3,8 @@
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} — {{ site.Title }}{{ end }}</title>
 <meta name="description" content="{{ .Description | default site.Params.description }}">
 <meta name="theme-color" content="#B9D3DA">
-<link rel="preload" href="{{ "fonts/bricolage-grotesque.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Language.LanguageCode }}" href="{{ .Permalink }}">
+{{- end }}
+<link rel="preload" href="{{ "fonts/funnel-sans.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">

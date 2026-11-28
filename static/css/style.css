@@ -5,27 +5,12 @@
    Breakpoints: 600px, 900px.
 ------------------------------------------------------------------------------------------------- */
 
-/* Variable font: weight 200–800, width 75–100 %, optical size 12–96 */
+/* Funnel Sans, variable weight 300–800 */
 @font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("../fonts/bricolage-grotesque.woff2") format("woff2");
-  font-weight: 200 800;
-  font-stretch: 75% 100%;
+  font-family: "Funnel Sans";
+  src: url("../fonts/funnel-sans.woff2") format("woff2");
+  font-weight: 300 800;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DM Mono";
-  src: url("../fonts/dm-mono-400.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "DM Mono";
-  src: url("../fonts/dm-mono-500.woff2") format("woff2");
-  font-weight: 500;
   font-display: swap;
 }
 
@@ -39,14 +24,11 @@
   --color-bg:    #B9D3DA;
   --color-text:  var(--navy);
   --color-brand: #F2552C;   /* coral: title, mark and menu */
-  --muted: color-mix(in srgb, currentColor 55%, transparent);
-  --rule:  color-mix(in srgb, currentColor 35%, transparent);
+  --muted: color-mix(in srgb, currentColor 65%, transparent);
 
-  --font-display: "Bricolage Grotesque", "Arial Narrow", sans-serif;
-  --font-text:    "Bricolage Grotesque", system-ui, sans-serif;
-  --font-mono:    "DM Mono", ui-monospace, Menlo, monospace;
+  --font: "Funnel Sans", system-ui, sans-serif;
 
-  --text-label: 0.75rem;
+  --text-label: 0.8125rem;
   --text-body:  clamp(1rem, 0.94rem + 0.25vw, 1.1875rem);
   --text-lede:  clamp(1.5rem, 1rem + 2vw, 2.75rem);
   --text-title: clamp(2.75rem, 1rem + 7.5vw, 9.5rem);
@@ -86,7 +68,7 @@ img { display: block; max-width: 100%; height: auto; }
 body {
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-text);
+  font-family: var(--font);
   font-size: var(--text-body);
   line-height: 1.45;
 }
@@ -119,28 +101,21 @@ a {
 .g--sticky,
 .g--pair,
 .g--wide,
-.index__row,
-.hero__meta {
+.index__row {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
 }
 
-/* Labels and captions in mono */
+/* Small text: captions, dates, the top bar and the footer */
 .cap,
-.post__meta,
-.hero__meta,
+.post__date,
 .topbar,
-.index__num,
 .index__date,
 .site-footer__row {
-  font-family: var(--font-mono);
   font-size: var(--text-label);
   line-height: 1.45;
-  letter-spacing: 0.01em;
 }
-
-.cap__num { color: var(--muted); margin-right: 0.6em; }
 
 
 /* TOP BAR --------------------------------------------------------------------------------------- */
@@ -164,10 +139,8 @@ a {
 }
 
 .topbar__mark {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 800;
-  font-stretch: 75%;
   text-transform: uppercase;
   letter-spacing: 0.01em;
   transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
@@ -177,6 +150,21 @@ a {
   opacity: 0;
   transform: translateY(-0.4rem);
   pointer-events: none;
+}
+
+
+.lang {
+  display: flex;
+  gap: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.lang__option { opacity: 0.55; }
+.lang__option[aria-current="page"] { opacity: 1; }
+
+@media (hover: hover) {
+  .lang__option:hover { opacity: 1; }
 }
 
 
@@ -195,24 +183,14 @@ a {
   padding: var(--bar) var(--pad) var(--pad);
 }
 
-.hero__meta {
-  padding-top: 0.6rem;
-  border-top: 1px solid var(--rule);
-}
-
-.hero__meta > :nth-child(1) { grid-column: 1 / 7; }
-.hero__meta > :nth-child(2) { grid-column: 7 / 10; color: var(--muted); }
-.hero__meta > :nth-child(3) { grid-column: 10 / 13; color: var(--muted); }
-
-/* "ØYE MOT ØYE" at width 75 % measures 3.99 em: this fills the line edge to edge */
+/* The factor is the width of "ØYE MOT ØYE" in em, measured in the browser: fills the line */
 .hero { container-type: inline-size; }
 
 .hero__title {
   color: var(--color-brand);
-  font-family: var(--font-display);
-  font-size: calc(100cqw / 4.02);
+  font-family: var(--font);
+  font-size: calc(100cqw / 6.3);
   font-weight: 800;
-  font-stretch: 75%;
   line-height: 0.8;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -241,17 +219,14 @@ a {
 }
 
 .post__head {
-  row-gap: var(--gap);
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
+  row-gap: 1rem;
 }
 
 .post__title {
-  grid-column: 1 / 10;
-  font-family: var(--font-display);
+  grid-column: 1 / -1;
+  font-family: var(--font);
   font-size: var(--text-title);
   font-weight: 800;
-  font-stretch: 75%;
   line-height: 0.86;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -261,36 +236,10 @@ a {
 
 .post__title a { text-decoration: none; }
 
-.post__year {
-  grid-column: 10 / 13;
-  justify-self: end;
-  color: var(--muted);
-  font-family: var(--font-display);
-  font-size: var(--text-title);
-  font-weight: 800;
-  font-stretch: 75%;
-  line-height: 0.86;
-}
-
-/* Meta row: label and value pairs, split by a thin rule like the columns of a table */
-.post__meta {
+.post__date {
   grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0;
-  margin-top: clamp(1.5rem, 4vw, 3.5rem);
+  color: var(--muted);
 }
-
-.post__meta > div {
-  display: flex;
-  gap: 1.25em;
-  padding-right: 2.5em;
-  margin-right: 1.25em;
-  border-right: 1px solid var(--rule);
-}
-
-.post__meta > div:last-child { border-right: 0; }
-.post__meta dt { color: var(--muted); }
 
 /* The lead image runs the full width of the browser */
 .post__lead {
@@ -336,10 +285,7 @@ a {
 
 .prose .more {
   margin-top: 1.5em;
-  font-family: var(--font-mono);
-  font-size: var(--text-label);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 600;
 }
 
 .post__wall {
@@ -453,39 +399,23 @@ a {
   scroll-margin-top: 0;
 }
 
-.index__title {
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-  font-family: var(--font-display);
-  font-size: var(--text-title);
-  font-weight: 800;
-  font-stretch: 75%;
-  line-height: 0.86;
-  text-transform: uppercase;
-}
-
 .index {
-  margin-top: clamp(2rem, 5vw, 4rem);
-  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 0.6rem;
 }
 
-.index__row {
-  align-items: baseline;
-  padding-block: 0.9rem;
-  border-bottom: 1px solid var(--rule);
-}
+.index__row { align-items: baseline; }
 
-.index__num  { grid-column: 1 / 3; color: var(--muted); }
 .index__name {
-  grid-column: 3 / 11;
-  font-family: var(--font-display);
+  grid-column: 1 / 10;
   font-size: var(--text-lede);
   font-weight: 700;
-  font-stretch: 80%;
   line-height: 1.05;
+  letter-spacing: -0.01em;
   text-decoration: none;
 }
-.index__date { grid-column: 11 / 13; justify-self: end; color: var(--muted); }
+
+.index__date { grid-column: 10 / 13; justify-self: end; color: var(--muted); }
 
 @media (hover: hover) {
   .index__name:hover { color: var(--color-brand); }
@@ -501,14 +431,8 @@ a {
 .site-footer__row a { text-decoration: none; }
 
 @media (max-width: 599.98px) {
-  .index__num  { grid-column: 1 / 3; }
-  .index__name { grid-column: 3 / 13; }
-  .index__date { grid-column: 3 / 13; justify-self: start; margin-top: 0.3rem; }
-  .post__title { grid-column: 1 / -1; }
-  .post__year  { grid-column: 1 / -1; justify-self: start; font-size: calc(var(--text-title) * 0.6); }
-  .hero__meta > :nth-child(1) { grid-column: 1 / -1; }
-  .hero__meta > :nth-child(2) { grid-column: 1 / 7; }
-  .hero__meta > :nth-child(3) { grid-column: 7 / 13; }
+  .index__name { grid-column: 1 / -1; }
+  .index__date { grid-column: 1 / -1; justify-self: start; margin-top: 0.2rem; }
 }
 
 
@@ -516,10 +440,10 @@ a {
 
 .grain {
   position: fixed;
-  inset: -256px;             /* one tile beyond every edge, so shifting never shows a gap */
+  inset: -432px;             /* one tile beyond every edge, so shifting never shows a gap */
   z-index: 100;
-  background-repeat: repeat;
-  opacity: 0.22;
+  background: url("../grain.webp") repeat;
+  opacity: 0.25;             /* a quarter strength: present, not loud */
   pointer-events: none;
   will-change: transform;
 }

@@ -1,17 +1,15 @@
 {{- $posts := where site.RegularPages "Section" "posts" }}
-<footer class="site-footer" id="innhold" data-episode="hav">
-  <h2 class="index__title">Innhold</h2>
+<footer class="site-footer" data-episode="hav">
   <ol class="index" role="list">
-    {{- range $i, $p := $posts }}
+    {{- range $p := $posts }}
     <li class="index__row">
-      <span class="index__num">{{ printf "%02d" (add $i 1) }}</span>
       <a class="index__name" href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
-      <time class="index__date" datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "02.01.2006" }}</time>
+      <time class="index__date" datetime="{{ $p.Date.Format "2006-01-02" }}">{{ time.Format ":date_long" $p.Date }}</time>
     </li>
     {{- end }}
   </ol>
   <div class="site-footer__row">
     <span>&copy; {{ now.Year }} {{ site.Title }}</span>
-    <a href="#top">Til toppen <span aria-hidden="true">↑</span></a>
+    <a href="#top">{{ i18n "toTop" }} <span aria-hidden="true">↑</span></a>
   </div>
 </footer>

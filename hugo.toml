@@ -1,11 +1,25 @@
 baseURL = "/"
-languageCode = "no"
 title = "øye mot øye"
 timeZone = "Europe/Oslo"
 enableRobotsTXT = true
 
+# Norwegian (bokmål, key "nb" so dates come out in Norwegian) at the root, English under /en/
+defaultContentLanguage = "nb"
+defaultContentLanguageInSubdir = false
+
 [params]
   description = "øye mot øye"
+  # logo = "logo.png"   # the lino-print logo, placed in static/; replaces the text title
+
+[languages]
+  [languages.nb]
+    languageCode = "nb"
+    languageName = "Norsk"
+    weight = 1
+  [languages.en]
+    languageCode = "en"
+    languageName = "English"
+    weight = 2
 
 [taxonomies]
   tag = "tags"
