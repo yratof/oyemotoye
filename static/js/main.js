@@ -31,10 +31,25 @@
   let queued = false;
   const update = () => {
     queued = false;
-    mark.dataset.mark = scrollY > innerHeight * 0.75 ? "shown" : "hidden";
+    mark.dataset.mark = scrollY > innerHeight * 0.6 ? "shown" : "hidden";
   };
   addEventListener("scroll", () => {
     if (!queued) { queued = true; requestAnimationFrame(update); }
   }, { passive: true });
   update();
+})();
+
+// Front-page film: stays on its poster frame for visitors who prefer reduced motion,
+// and pauses while the tab is hidden.
+(() => {
+  const video = document.querySelector("[data-hero-video]");
+  if (!video) return;
+  const still = matchMedia("(prefers-reduced-motion: reduce)");
+  const sync = () => {
+    if (still.matches || document.hidden) video.pause();
+    else video.play().catch(() => {});
+  };
+  sync();
+  still.addEventListener("change", sync);
+  document.addEventListener("visibilitychange", sync);
 })();

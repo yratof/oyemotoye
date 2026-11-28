@@ -178,9 +178,31 @@ a {
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--gap);
-  height: 100vh;
-  height: 100svh;
+  height: 82vh;
+  height: 82svh;
   padding: var(--bar) var(--pad) var(--pad);
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--navy);
+}
+
+/* Silent film loop behind the title, darkened at the top and bottom so the orange reads */
+.hero__video {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom,
+    rgb(10 36 51 / 0.45) 0%, rgb(10 36 51 / 0.1) 22%, rgb(10 36 51 / 0.1) 55%, rgb(10 36 51 / 0.6) 100%);
 }
 
 /* The factor is the width of "ØYE MOT ØYE" in em, measured in the browser: fills the line */

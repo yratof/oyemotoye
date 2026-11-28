@@ -1,6 +1,8 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "posts" }}
 <div class="hero" id="top" data-episode="hav">
+  <video class="hero__video" src="{{ "video/hero.mp4" | relURL }}" poster="{{ "video/hero-poster.jpg" | relURL }}"
+         autoplay muted loop playsinline preload="auto" aria-hidden="true" data-hero-video></video>
   {{- /* When the lino-print logo exists: set params.logo in hugo.toml to its path under static/ */}}
   <h1 class="hero__title" data-hero>
     {{- with site.Params.logo }}<img class="hero__logo" src="{{ . | relURL }}" alt="{{ site.Title }}">{{ else }}{{ site.Title }}{{ end -}}
